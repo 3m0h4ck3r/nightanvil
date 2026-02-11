@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220" role="img" aria-label="NightAnvil logo">
+  <defs>
+    <linearGradient id="ngrad" x1="0" x2="1">
+      <stop offset="0" stop-color="#FF2D55"/>
+      <stop offset="1" stop-color="#00F7D4"/>
+    </linearGradient>
+    <filter id="nglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="transparent"/>
+  <g transform="translate(20,12)">
+    <path d="M40 120 L640 120 L600 170 L80 170 Z" fill="#0E1116" stroke="url(#ngrad)" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M120 120 C160 50, 360 20, 440 120 L560 120 C500 40, 360 10, 220 60 Z" fill="#06040A"/>
+    <path d="M420 48 L460 10 L420 30 L460 30 L420 60 L440 34 Z" fill="url(#ngrad)" filter="url(#nglow)" opacity="0.98"/>
+    <g transform="translate(520,20)">
+      <text x="10" y="72" font-family="Orbitron, sans-serif" font-size="64" fill="#EAF6FF" font-weight="700">NightAnvil</text>
+      <text x="10" y="102" font-family="Inter, sans-serif" font-size="16" fill="#8B5CF6">Forge gigs in the dark — loud, sharp, uncompromising</text>
+    </g>
+  </g>
+</svg>

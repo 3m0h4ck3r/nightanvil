@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>NightAnvil — Forge gigs in the dark</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/night_compact.svg">
+  <link rel="stylesheet" href="/static/css/night_theme.css">
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="/assets/night_compact.svg" alt="NightAnvil">
+      <div>
+        <div class="h1">NightAnvil</div>
+        <div class="small-muted">Forge gigs in the dark — loud, sharp, uncompromising</div>
+      </div>
+    </div>
+    <div><a href="/checkout" style="text-decoration:none"><button class="cta">Checkout</button></a></div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div style="font-family:Orbitron, sans-serif;font-size:26px;font-weight:700">Ship a gig that scares the competition.</div>
+      <p class="small-muted">AI-powered descriptions, aggressive pricing, neon promos, and polished invoices. Built for freelancers who dare to be different.</p>
+      <div style="height:18px"></div>
+      <form action="/generate_invoice" method="post">
+        <input class="input" name="client" placeholder="Client name"><br/><br/>
+        <input class="input" name="project" placeholder="Project title"><br/><br/>
+        <input class="input" name="items" placeholder="Item:Amount, Item2:Amount2"><br/><br/>
+        <button class="cta">Generate Invoice</button>
+      </form>
+    </section>
+
+    <section style="height:18px"></section>
+
+    <section class="card promo">
+      <div>
+        <div style="font-weight:800">Promo Generator</div>
+        <div class="small-muted">Neon thumbnails, bold taglines, one-click Fiverr export</div>
+      </div>
+      <div style="margin-left:auto"><button class="cta">Make Promo</button></div>
+    </section>
+  </main>
+
+  <footer class="footer">© NightAnvil · Forge gigs that break the rules</footer>
+</body>
+</html>
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/static/css/night_theme.css"></head>
+<body><header class="header"><h1>NightAnvil</h1></header>
+<main><form action="/generate_invoice" method="post"><input name="client" placeholder="Client"><button>Generate Invoice</button></form></main>
+</body></html>

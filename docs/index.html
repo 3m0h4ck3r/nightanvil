@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NightAnvil - Freelancer Business Toolkit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(180deg, #06040A 0%, #081024 100%);
+            color: #EAF6FF;
+            line-height: 1.6;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .brand { display: flex; gap: 12px; align-items: center; }
+        .brand h1 { font-family: 'Orbitron', serif; font-size: 24px; font-weight: 700; }
+        .nav { display: flex; gap: 24px; }
+        .nav a { color: #EAF6FF; text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .nav a:hover { color: #00F7D4; }
+        .hero {
+            text-align: center;
+            padding: 80px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h2 {
+            font-family: 'Orbitron', serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-shadow: 0 0 20px rgba(0,247,212,0.1);
+        }
+        .tagline {
+            font-size: 18px;
+            color: #99A3B3;
+            margin-bottom: 32px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #FF2D55, #00F7D4);
+            color: #06040A;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transform: skewX(-6deg);
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+        .cta-button:hover { transform: skewX(-6deg) scale(1.05); }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 24px;
+        }
+        .feature h3 {
+            font-family: 'Orbitron', serif;
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #00F7D4;
+        }
+        .feature p { color: #99A3B3; font-size: 14px; }
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #99A3B3;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <h1>⚒ NightAnvil</h1>
+        </div>
+        <nav class="nav">
+            <a href="#features">Features</a>
+            <a href="https://github.com/yourusername/nightanvil">GitHub</a>
+            <a href="http://localhost:5000/login">Dashboard</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Forge gigs that break the rules</h2>
+            <p class="tagline">Professional Fiverr gig generator, invoicing, and freelancer toolkit. AI-powered. Stripe integrated. Open source.</p>
+            <a href="http://localhost:5000" class="cta-button">Start Free</a>
+            <a href="https://github.com" class="cta-button">View on GitHub</a>
+        </section>
+
+        <section class="features" id="features">
+            <div class="feature">
+                <h3>📝 Gig Generator</h3>
+                <p>Create high-converting Fiverr gigs with AI-powered descriptions, titles, and pricing.</p>
+            </div>
+            <div class="feature">
+                <h3>💰 Invoicing</h3>
+                <p>Generate professional PDFs, track payments, and sync with Stripe for automatic settlement.</p>
+            </div>
+            <div class="feature">
+                <h3>📊 Dashboard</h3>
+                <p>Manage clients, invoices, and gigs in one place. Track revenue and payment history.</p>
+            </div>
+            <div class="feature">
+                <h3>🔗 Fiverr Integration</h3>
+                <p>Auto-list gigs directly to Fiverr. One-click sync from your NightAnvil dashboard.</p>
+            </div>
+            <div class="feature">
+                <h3>🛡 Stripe Ready</h3>
+                <p>Collect payments securely. Webhooks for charge events, instant settlement tracking.</p>
+            </div>
+            <div class="feature">
+                <h3>🎨 Professional Brand</h3>
+                <p>Dark, modern UI. Neon accents. Built for selling. Fully customizable.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NightAnvil. Forge gigs in the dark. <a href="https://github.com" style="color:#00F7D4;text-decoration:none">GitHub</a></p>
+    </footer>
+</body>
+</html>

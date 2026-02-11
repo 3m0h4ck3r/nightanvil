@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>NightAnvil — Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/night_compact.svg">
+  <link rel="stylesheet" href="/static/css/night_theme.css">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    .checkout-form { max-width: 500px; margin: 40px auto; }
+    .form-group { margin-bottom: 20px; }
+    #card-element { padding: 10px; border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; background: transparent; color: #EAF6FF; }
+    #card-element.StripeElement--focus { border-color: #FF2D55; }
+    .error-message { color: #FF2D55; font-size: 13px; margin-top: 5px; }
+    .success-message { color: #00F7D4; font-size: 13px; }
+    .form-input { width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; background: transparent; color: #EAF6FF; font-size: 14px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="/assets/night_compact.svg" alt="NightAnvil">
+      <div>
+        <div class="h1">NightAnvil</div>
+        <div class="small-muted">Secure checkout</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card checkout-form">
+      <div style="font-family:Orbitron, sans-serif;font-size:20px;font-weight:700;margin-bottom:16px">Complete your purchase</div>
+      
+      <form id="payment-form">
+        <div class="form-group">
+          <label style="font-weight:600;display:block;margin-bottom:8px">Client Name</label>
+          <input type="text" id="client-name" class="form-input" required placeholder="Your name" />
+        </div>
+
+        <div class="form-group">
+          <label style="font-weight:600;display:block;margin-bottom:8px">Project</label>
+          <input type="text" id="project" class="form-input" required placeholder="Project title" />
+        </div>
+
+        <div class="form-group">
+          <label style="font-weight:600;display:block;margin-bottom:8px">Amount (USD)</label>
+          <div style="position:relative;display:flex;align-items:center">
+            <span style="position:absolute;left:10px">$</span>
+            <input type="number" id="amount" class="form-input" required placeholder="Ex: 99.99" min="0.50" step="0.01" style="padding-left:28px" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label style="font-weight:600;display:block;margin-bottom:8px">Card Details</label>
+          <div id="card-element"></div>
+          <div id="card-errors" class="error-message"></div>
+        </div>
+
+        <button type="submit" class="cta" id="pay-btn" style="width:100%;">Pay now</button>
+        <div id="payment-message" style="margin-top:12px;text-align:center;"></div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const stripe = Stripe(document.currentScript.getAttribute('data-publishable-key') || 'pk_test_placeholder');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    const cardErrors = document.getElementById('card-errors');
+    cardElement.on('change', (event) => {
+      if (event.error) {
+        cardErrors.textContent = event.error.message;
+      } else {
+        cardErrors.textContent = '';
+      }
+    });
+
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const amount = parseFloat(document.getElementById('amount').value) * 100;
+      const clientName = document.getElementById('client-name').value;
+      const project = document.getElementById('project').value;
+      
+      if (!amount || amount < 50) {
+        cardErrors.textContent = 'Amount must be at least $0.50';
+        return;
+      }
+
+      document.getElementById('pay-btn').disabled = true;
+      document.getElementById('payment-message').textContent = 'Processing...';
+
+      try {
+        const res = await fetch('/api/create_payment_intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount, client_name: clientName, project })
+        });
+        const data = await res.json();
+
+        if (data.status !== 'success') {
+          cardErrors.textContent = data.message || 'Payment failed.';
+          document.getElementById('pay-btn').disabled = false;
+          return;
+        }
+
+        const { error } = await stripe.confirmCardPayment(data.client_secret, {
+          payment_method: { card: cardElement }
+        });
+
+        if (error) {
+          cardErrors.textContent = error.message;
+          document.getElementById('pay-btn').disabled = false;
+        } else {
+          document.getElementById('payment-message').innerHTML = '<span class="success-message">✓ Payment successful!</span>';
+          form.style.display = 'none';
+        }
+      } catch (err) {
+        cardErrors.textContent = 'Error: ' + err.message;
+        document.getElementById('pay-btn').disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

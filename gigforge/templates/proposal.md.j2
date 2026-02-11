@@ -1,0 +1,28 @@
+# Proposal for {{ client }}
+
+**Project:** {{ project }}
+**Prepared by:** {{ author }}
+**Date:** {{ date }}
+
+## Summary
+{{ summary }}
+
+## Scope
+- Deliverables:
+{% for d in deliverables %}
+- {{ d }}
+{% endfor %}
+
+## Timeline
+- Start: {{ start_date }}
+- Duration: {{ duration }} days
+
+## Pricing
+Total: ${{ price }}
+
+## Terms
+- 50% upfront, 50% on delivery.
+- Revisions: {{ revisions }} included.
+
+Thanks,
+{{ author }}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>NightAnvil — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/night_compact.svg">
+  <link rel="stylesheet" href="/static/css/night_theme.css">
+  <style>
+    .stat-box { display:inline-block; width:23%; margin:1%; padding:16px; text-align:center; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03)); border-radius:10px; border:1px solid rgba(255,255,255,0.03); }
+    .stat-value { font-size:28px; font-weight:700; color:#00F7D4; }
+    .stat-label { font-size:12px; color:#99A3B3; margin-top:8px; }
+    .table { width:100%; border-collapse:collapse; }
+    .table th { text-align:left; padding:12px; border-bottom:1px solid rgba(255,255,255,0.05); background:rgba(255,255,255,0.01); }
+    .table td { padding:12px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .badge { display:inline-block; padding:4px 8px; border-radius:4px; font-size:11px; }
+    .badge-paid { background:#00F7D4; color:#06040A; }
+    .badge-draft { background:#99A3B3; color:#06040A; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="/assets/night_compact.svg" alt="NightAnvil">
+      <div>
+        <div class="h1">Dashboard</div>
+        <div class="small-muted">Welcome, {{ current_user.business_name }}</div>
+      </div>
+    </div>
+    <div><a href="/logout"><button class="cta">Logout</button></a></div>
+  </header>
+
+  <main class="container">
+    <section style="margin-bottom:32px">
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="stat-box">
+          <div class="stat-value">${{ "%.2f"|format(total_revenue) }}</div>
+          <div class="stat-label">Total Revenue</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">{{ invoices|length }}</div>
+          <div class="stat-label">Invoices</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">{{ gigs|length }}</div>
+          <div class="stat-label">Gigs</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">{{ clients|length }}</div>
+          <div class="stat-label">Clients</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:32px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-family:Orbitron, sans-serif;font-size:20px;font-weight:700">Recent Invoices</div>
+        <a href="/generate_invoice"><button class="cta">New Invoice</button></a>
+      </div>
+      <table class="table">
+        <tr>
+          <th>Project</th>
+          <th>Client</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+        {% for inv in invoices[:5] %}
+        <tr>
+          <td>{{ inv.project }}</td>
+          <td>{{ inv.client.name if inv.client else 'N/A' }}</td>
+          <td>${{ "%.2f"|format(inv.amount) }}</td>
+          <td><span class="badge badge-{{ inv.status }}">{{ inv.status }}</span></td>
+          <td>{{ inv.created_at.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-family:Orbitron, sans-serif;font-size:20px;font-weight:700">Your Gigs</div>
+        <a href="/gigs/new"><button class="cta">Create Gig</button></a>
+      </div>
+      <table class="table">
+        <tr>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Fiverr</th>
+        </tr>
+        {% for gig in gigs %}
+        <tr>
+          <td>{{ gig.title }}</td>
+          <td>${{ "%.2f"|format(gig.price) }}</td>
+          <td><span class="badge badge-{{ gig.status }}">{{ gig.status }}</span></td>
+          <td>
+            {% if gig.fiverr_url %}
+              <a href="{{ gig.fiverr_url }}" target="_blank" style="color:#00F7D4;text-decoration:none">View</a>
+            {% else %}
+              <button class="cta" onclick="syncFiverr({{ gig.id }})">Sync</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </section>
+  </main>
+
+  <script>
+    function syncFiverr(gigId) {
+      fetch(`/gigs/${gigId}/sync-fiverr`, { method: 'POST' })
+        .then(r => r.json())
+        .then(d => {
+          if (d.status === 'success') {
+            alert('Gig synced to Fiverr!');
+            window.location.reload();
+          } else {
+            alert('Error: ' + d.error);
+          }
+        })
+        .catch(e => alert('Error: ' + e));
+    }
+  </script>
+</body>
+</html>
